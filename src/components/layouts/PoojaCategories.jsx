@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 const PoojaCategories = ({ panditDetail }) => {
   const [categories, setCategories] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+  const page = 1;
+  const limit = 10;
+  const search = "";
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryImages, setCategoryImages] = useState({});
   const navigate = useNavigate();
@@ -51,14 +51,6 @@ const PoojaCategories = ({ panditDetail }) => {
     fetchPoojaCategories();
   }, [page, limit, search]);
 
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value);
-  };
-
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
-
   const fetchCategoryImage = async (categoryId, presignedUrl) => {
     try {
       const response = await fetch(
@@ -68,6 +60,7 @@ const PoojaCategories = ({ panditDetail }) => {
         {
           method: "GET",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${panditDetail.results.access}`,
           },
         }

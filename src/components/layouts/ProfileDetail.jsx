@@ -23,33 +23,6 @@ const ProfileDetail = ({ panditDetail }) => {
     }
   };
 
-  const handleImageUpload = async () => {
-    try {
-    const uploadResponse = await fetch(
-      `test.backend.urbanoinfotech.com/api/v1/generate-presigned-url?file_name=${encodeURIComponent(
-        image.name
-      )}&image_path=${imageUrl}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${panditDetail.results.access}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (!uploadResponse.ok) {
-      throw new Error("Image upload failed");
-    }
-    console.log(uploadResponse, "AAAAAAAAAAAAAAAAAAAAAA");
-    // const getImgareUrl = await uploadResponse.json();
-    // const imageUrl = getImgareUrl.imageUrl;
-    // formData.profile_image = imageUrl;
-  } catch (error) {
-    toast("Error fetching image url", error);
-  }
-  };
-
   const handleSave = async () => {
     const formData = {
       first_name: firstName,

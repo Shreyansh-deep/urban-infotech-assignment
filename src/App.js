@@ -25,9 +25,15 @@ function App() {
             path="/createprofile"
             element={<ProfileDetail panditDetail={panditDetail} />}
           />
-          <Route path="/poojacategories" element={<PoojaCategories panditDetail={panditDetail} />} />
-          <Route path="/services" element={<Services panditDetail={panditDetail} />} />
-          <Route path="/confirmation" element={<Confirmtion />}/>
+          <Route
+            path="/poojacategories"
+            element={<PoojaCategories panditDetail={panditDetail} />}
+          />
+          <Route
+            path="/services"
+            element={<Services panditDetail={panditDetail} />}
+          />
+          <Route path="/confirmation" element={<Confirmtion />} />
         </Routes>
       </div>
     </BrowserRouter>

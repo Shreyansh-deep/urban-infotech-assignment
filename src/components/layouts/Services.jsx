@@ -13,9 +13,9 @@ import { BiEditAlt } from "react-icons/bi";
 
 const Services = ({ panditDetail }) => {
   const [services, setServices] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
+  const page = 1;
+  const limit = 10;
+  const search = ""
   const [selectedServices, setSelectedServices] = useState([]);
   const [editingService, setEditingService] = useState(null);
   const [serviceImages, setServiceImages] = useState({});
@@ -65,6 +65,7 @@ const Services = ({ panditDetail }) => {
         {
           method: "GET",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${panditDetail.results.access}`,
           },
         }
