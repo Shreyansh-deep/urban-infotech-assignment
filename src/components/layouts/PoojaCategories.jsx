@@ -49,7 +49,7 @@ const PoojaCategories = ({ panditDetail }) => {
     };
 
     fetchPoojaCategories();
-  }, [page, limit, search]);
+  }, []);
 
   const fetchCategoryImage = async (categoryId, presignedUrl) => {
     try {

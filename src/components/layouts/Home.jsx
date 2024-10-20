@@ -7,9 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 
-const Home = ({setPanditDetail,panditDetail}) => {
+const Home = ({setPanditDetail}) => {
   const [number, setNumber] = useState("");
-  const [otp, setOtp] = useState("");
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
 
@@ -45,7 +44,6 @@ const Home = ({setPanditDetail,panditDetail}) => {
   };
 
   const handleOtpSubmit = async () => {
-    setOtp(inputValue);
     setInputValue("");
 
     const data = {

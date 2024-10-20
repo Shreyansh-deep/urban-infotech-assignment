@@ -54,7 +54,7 @@ const Services = ({ panditDetail }) => {
     };
 
     fetchServices();
-  }, [page, limit, search]);
+  }, []);
 
   const fetchServiceImage = async (serviceId, presignedUrl) => {
     try {

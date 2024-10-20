@@ -17,7 +17,6 @@ function App() {
             element={
               <Home
                 setPanditDetail={setPanditDetail}
-                panditDetail={panditDetail}
               />
             }
           />

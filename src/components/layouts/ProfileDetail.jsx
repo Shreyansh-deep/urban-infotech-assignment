@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const ProfileDetail = ({ panditDetail }) => {
-  const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -17,7 +16,6 @@ const ProfileDetail = ({ panditDetail }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImage(file);
       const url = URL.createObjectURL(file);
       setImageUrl(url);
     }
