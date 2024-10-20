@@ -16,6 +16,34 @@ const PoojaCategories = ({ panditDetail }) => {
   const [categoryImages, setCategoryImages] = useState({});
   const navigate = useNavigate();
 
+  const fetchCategoryImage = async (categoryId, presignedUrl) => {
+    try {
+      const response = await fetch(
+        `test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
+          presignedUrl
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${panditDetail.results.access}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch image");
+      }
+
+      const imageBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(imageBlob);
+      setCategoryImages((prev) => ({ ...prev, [categoryId]: imageUrl }));
+    } catch (error) {
+      console.error("Error fetching category image:", error);
+      toast.error("Failed to load category image");
+    }
+  };
+
   useEffect(() => {
     const fetchPoojaCategories = async () => {
       try {
@@ -49,35 +77,9 @@ const PoojaCategories = ({ panditDetail }) => {
     };
 
     fetchPoojaCategories();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+  },[]);
 
-  const fetchCategoryImage = async (categoryId, presignedUrl) => {
-    try {
-      const response = await fetch(
-        `test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
-          presignedUrl
-        )}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${panditDetail.results.access}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch image");
-      }
-
-      const imageBlob = await response.blob();
-      const imageUrl = URL.createObjectURL(imageBlob);
-      setCategoryImages((prev) => ({ ...prev, [categoryId]: imageUrl }));
-    } catch (error) {
-      console.error("Error fetching category image:", error);
-      toast.error("Failed to load category image");
-    }
-  };
 
   const handleCategorySelect = (categoryId) => {
     setSelectedCategory(categoryId === selectedCategory ? null : categoryId);

@@ -21,6 +21,34 @@ const Services = ({ panditDetail }) => {
   const [serviceImages, setServiceImages] = useState({});
   const navigate = useNavigate();
 
+  const fetchServiceImage = async (serviceId, presignedUrl) => {
+    try {
+      const response = await fetch(
+        `test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
+          presignedUrl
+        )}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${panditDetail.results.access}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch image");
+      }
+
+      const imageBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(imageBlob);
+      setServiceImages((prev) => ({ ...prev, [serviceId]: imageUrl }));
+    } catch (error) {
+      console.error("Error fetching service image:", error);
+      toast.error("Failed to load service image");
+    }
+  };
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -54,35 +82,8 @@ const Services = ({ panditDetail }) => {
     };
 
     fetchServices();
-  }, []);
-
-  const fetchServiceImage = async (serviceId, presignedUrl) => {
-    try {
-      const response = await fetch(
-        `test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
-          presignedUrl
-        )}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${panditDetail.results.access}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch image");
-      }
-
-      const imageBlob = await response.blob();
-      const imageUrl = URL.createObjectURL(imageBlob);
-      setServiceImages((prev) => ({ ...prev, [serviceId]: imageUrl }));
-    } catch (error) {
-      console.error("Error fetching service image:", error);
-      toast.error("Failed to load service image");
-    }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+  },[]);
 
   const handleServiceSelect = (serviceId) => {
     setSelectedServices((prev) =>
