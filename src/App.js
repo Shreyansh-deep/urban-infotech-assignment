@@ -8,6 +8,7 @@ import Confirmtion from "./components/layouts/Confirmtion";
 
 function App() {
   const [panditDetail, setPanditDetail] = useState({});
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -22,15 +23,15 @@ function App() {
           />
           <Route
             path="/createprofile"
-            element={<ProfileDetail panditDetail={panditDetail} />}
+            element={<ProfileDetail panditDetail={panditDetail}/>}
           />
           <Route
             path="/poojacategories"
-            element={<PoojaCategories panditDetail={panditDetail} />}
+            element={<PoojaCategories panditDetail={panditDetail}/>}
           />
           <Route
             path="/services"
-            element={<Services panditDetail={panditDetail} />}
+            element={<Services panditDetail={panditDetail}/>}
           />
           <Route path="/confirmation" element={<Confirmtion />} />
         </Routes>

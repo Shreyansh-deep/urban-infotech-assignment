@@ -21,18 +21,14 @@ const Services = ({ panditDetail }) => {
   const [serviceImages, setServiceImages] = useState({});
   const navigate = useNavigate();
 
-  const fetchServiceImage = async (serviceId, presignedUrl) => {
+  const fetchSeviceImage = async (categoryId, presignedUrl) => {
     try {
       const response = await fetch(
-        `test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
+        `https://test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
           presignedUrl
         )}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${panditDetail.results.access}`,
-          },
         }
       );
 
@@ -40,12 +36,12 @@ const Services = ({ panditDetail }) => {
         throw new Error("Failed to fetch image");
       }
 
-      const imageBlob = await response.blob();
-      const imageUrl = URL.createObjectURL(imageBlob);
-      setServiceImages((prev) => ({ ...prev, [serviceId]: imageUrl }));
+      const imageObj = await response.json();
+      const imageUrl = (imageObj.results.presigned_url);
+      setServiceImages((prev) => ({ ...prev, [categoryId]: imageUrl }));
     } catch (error) {
-      console.error("Error fetching service image:", error);
-      toast.error("Failed to load service image");
+      console.error("Error fetching category image:", error);
+      toast.error("Failed to load category image");
     }
   };
 
@@ -74,7 +70,7 @@ const Services = ({ panditDetail }) => {
 
         // Fetch images for each service
         responseData.results.data.forEach((service) => {
-          fetchServiceImage(service.id, service.image);
+          fetchSeviceImage(service.id, service.image);
         });
       } catch (error) {
         toast.error("Error fetching pooja services: " + error.message);

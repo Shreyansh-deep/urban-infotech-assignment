@@ -19,15 +19,11 @@ const PoojaCategories = ({ panditDetail }) => {
   const fetchCategoryImage = async (categoryId, presignedUrl) => {
     try {
       const response = await fetch(
-        `test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
+        `https://test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
           presignedUrl
         )}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${panditDetail.results.access}`,
-          },
         }
       );
 
@@ -35,14 +31,15 @@ const PoojaCategories = ({ panditDetail }) => {
         throw new Error("Failed to fetch image");
       }
 
-      const imageBlob = await response.blob();
-      const imageUrl = URL.createObjectURL(imageBlob);
+      const imageObj = await response.json();
+      const imageUrl = (imageObj.results.presigned_url);
       setCategoryImages((prev) => ({ ...prev, [categoryId]: imageUrl }));
     } catch (error) {
       console.error("Error fetching category image:", error);
       toast.error("Failed to load category image");
     }
   };
+
 
   useEffect(() => {
     const fetchPoojaCategories = async () => {

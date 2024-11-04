@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { IoExitOutline } from "react-icons/io5";
 import { FaArrowLeft, FaPen } from "react-icons/fa";
@@ -12,6 +12,60 @@ const ProfileDetail = ({ panditDetail }) => {
   const [lastName, setLastName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const navigate = useNavigate();
+
+  const fetchImage = async ( presignedUrl) => {
+    try {
+      const response = await fetch(
+        `https://test.backend.urbanoinfotech.com/api/v1/get-presigned-url?url=${encodeURIComponent(
+          presignedUrl
+        )}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch image");
+      }
+
+      const imageObj = await response.json();
+      setImageUrl(imageObj.results.presigned_url)
+    } catch (error) {
+      toast.error("Failed to load category image");
+    }
+  };
+
+  useEffect(() => {
+    const handleGet = async () => {
+      try {
+        const response = await fetch(
+          `https://test.backend.urbanoinfotech.com/api/v1/pandit/${panditDetail.results.data.user_id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${panditDetail.results.access}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const responseData = await response.json();
+        console.log(responseData);
+        {
+          responseData && setFirstName(responseData.results.first_name);
+          setLastName(responseData.results.last_name);
+          setContactNumber(responseData.results.contact_number);
+          fetchImage(responseData.results.profile_image);
+        }
+        toast(responseData.message);
+      } catch (error) {
+        toast("Error saving profile:", error);
+      }
+    };
+    handleGet();
+  }, []);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -84,6 +138,7 @@ const ProfileDetail = ({ panditDetail }) => {
           First Name
           <input
             type="text"
+            value={firstName}
             className="w-158 h-14 border-2 border-gray rounded-xl pl-5"
             onChange={(e) => setFirstName(e.target.value)}
           />
@@ -92,6 +147,7 @@ const ProfileDetail = ({ panditDetail }) => {
           Last Name
           <input
             type="text"
+            value={lastName}
             className="w-158 h-14 border-2 border-gray rounded-xl pl-5"
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -100,6 +156,7 @@ const ProfileDetail = ({ panditDetail }) => {
           Contact Number
           <input
             type="text"
+            value={contactNumber}
             className="w-158 h-14 border-2 border-gray rounded-xl pl-5"
             onChange={(e) => setContactNumber(e.target.value)}
           />
